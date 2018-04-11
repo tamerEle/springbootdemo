@@ -9,7 +9,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-@ServerEndpoint(value = "/websocket")
-@Component
+/*@ServerEndpoint(value = "/websocket")
+@Component*/
 public class MyWebSocket {
 }

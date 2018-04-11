@@ -2,12 +2,22 @@ package com.zjpavt.springbootdemo;
 
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.SpringAnnotationScanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.io.IOException;
+import java.net.Socket;
+
+@EnableAutoConfiguration
 @SpringBootApplication
 public class SpringbootdemoApplication {
+	private static final Logger log = LoggerFactory.getLogger("11");
+	private static final String HOST = "127.0.0.1";
+	private static final int PORT = 9092;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootdemoApplication.class, args);
@@ -16,16 +26,10 @@ public class SpringbootdemoApplication {
 	@Bean
 	public SocketIOServer socketIOServer() {
 		com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
-
 		String os = System.getProperty("os.name");
-		if(os.toLowerCase().startsWith("win")){   //在本地window环境测试时用localhost
-			System.out.println("this is  windows");
-			config.setHostname("localhost");
-		} else {
-			config.setHostname("123.123.111.222");   //部署到你的远程服务器正式发布环境时用服务器公网ip
-		}
-		config.setPort(9092);
-
+		System.out.println("this is  windows");
+		config.setHostname(HOST);
+		config.setPort(PORT);
         /*config.setAuthorizationListener(new AuthorizationListener() {//类似过滤器
             @Override
             public boolean isAuthorized(HandshakeData data) {
@@ -42,6 +46,9 @@ public class SpringbootdemoApplication {
 
 	@Bean
 	public SpringAnnotationScanner springAnnotationScanner(SocketIOServer socketServer) {
+		log.info("bean-------------------------------------");
 		return new SpringAnnotationScanner(socketServer);
 	}
+
+
 }

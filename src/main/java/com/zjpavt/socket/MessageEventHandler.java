@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.UUID;
-@Component
+//@Component
 public class MessageEventHandler {
     public static SocketIOServer socketIoServer;
     static ArrayList<UUID> listClient = new ArrayList<>();
@@ -37,6 +37,12 @@ public class MessageEventHandler {
 
     @OnEvent(value = "messageevent")
     public void onEvent(SocketIOClient client, AckRequest request, MessageInfo data) {
+        System.out.println("发来消息：" + data.getMsgContent());
+        socketIoServer.getClient(client.getSessionId()).sendEvent("messageevent", "back data");
+    }
+
+    @OnEvent(value = "")
+    public void onEvent1(SocketIOClient client, AckRequest request, MessageInfo data) {
         System.out.println("发来消息：" + data.getMsgContent());
         socketIoServer.getClient(client.getSessionId()).sendEvent("messageevent", "back data");
     }
