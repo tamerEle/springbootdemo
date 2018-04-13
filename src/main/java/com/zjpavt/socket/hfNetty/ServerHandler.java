@@ -5,7 +5,9 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ServerHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
@@ -16,10 +18,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         buf.readBytes(data);  
         String request = new String(data, "utf-8");  
         System.out.println("Server: " + request);  
-        //д���ͻ���  
-        String response = "���Ƿ�������Ϣ";  
-        ctx.writeAndFlush(Unpooled.copiedBuffer("888".getBytes()));  
-		//ReferenceCountUtil.release(msg);//�ͷ����е����ü�������
+        ctx.writeAndFlush(Unpooled.copiedBuffer("888".getBytes()));
+		//ReferenceCountUtil.release(msg);//
 	}
 
 	@Override
@@ -29,5 +29,4 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 		cause.printStackTrace();
 		ctx.close();
 	}
-	
 }

@@ -12,10 +12,10 @@ import org.springframework.context.annotation.Bean;
 import java.io.IOException;
 import java.net.Socket;
 
-@EnableAutoConfiguration
-@SpringBootApplication
+/*@EnableAutoConfiguration
+@SpringBootApplication*/
 public class SpringbootdemoApplication {
-	private static final Logger log = LoggerFactory.getLogger("11");
+	private static final Logger log = LoggerFactory.getLogger(SpringbootdemoApplication.class);
 	private static final String HOST = "127.0.0.1";
 	private static final int PORT = 9092;
 
@@ -27,7 +27,7 @@ public class SpringbootdemoApplication {
 	public SocketIOServer socketIOServer() {
 		com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
 		String os = System.getProperty("os.name");
-		System.out.println("this is  windows");
+		System.out.println("this is " + os);
 		config.setHostname(HOST);
 		config.setPort(PORT);
         /*config.setAuthorizationListener(new AuthorizationListener() {//类似过滤器

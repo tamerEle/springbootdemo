@@ -27,9 +27,9 @@ public class Client {
                      socketChannel.pipeline().addLast(new ClientHandler());  
                  }  
              }); 
-			 ChannelFuture cf=bootstrap.connect("192.168.28.85", 9099).sync();	
+			 ChannelFuture cf=bootstrap.connect(Server.HOST, Server.CLIENT_PORT).sync();
 				cf.channel().writeAndFlush(Unpooled.copiedBuffer("777".getBytes()));
-				cf.channel().closeFuture().sync();//������ǰ�̣߳��ȴ����������
+				cf.channel().closeFuture().sync();
 				looptwo.shutdownGracefully();
     }  
 	catch(Exception e) {

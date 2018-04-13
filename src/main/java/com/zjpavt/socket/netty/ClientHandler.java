@@ -1,6 +1,7 @@
-package com.zjpavt.socket.hfNetty;
+package com.zjpavt.socket.netty;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
@@ -11,11 +12,15 @@ public class ClientHandler extends ChannelInboundHandlerAdapter{
 	        try {  
 	            ByteBuf buf = (ByteBuf) msg;  
 	            byte[] data = new byte[buf.readableBytes()];  
-	            buf.readBytes(data);  
-	            System.out.println("Client" + new String(data).trim());
+	            buf.readBytes(data);
+	            String strData = new String(data).trim();
+	            System.out.println(ctx.channel().config() + "Client recive message is:" + strData);
+	            if ("x".equals(strData)) {
+	            	ctx.writeAndFlush(Unpooled.copiedBuffer(("drivce ID:" + Math.random()).getBytes()));
+				}
 	        } finally {  
 	            ReferenceCountUtil.release(msg);  
-	            ctx.close();
+	            //ctx.close();
 	        }  
 	    }  
 	  
