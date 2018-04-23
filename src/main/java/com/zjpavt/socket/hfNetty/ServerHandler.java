@@ -7,7 +7,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 import org.springframework.stereotype.Component;
 
-@Component
 public class ServerHandler extends ChannelInboundHandlerAdapter {
 
 	@Override

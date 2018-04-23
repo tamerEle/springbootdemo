@@ -13,7 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
+//@Service
 public class ServerInitializer extends ChannelInitializer<Channel>{
     private Logger logger  = LoggerFactory.getLogger(ServerInitializer.class);
     @Override
@@ -27,7 +31,7 @@ public class ServerInitializer extends ChannelInitializer<Channel>{
            if(false){//
                pipeline.addLast(serverHandler);
            }else {
-               this.serverHandler = new ServerHandler();
+             //  this.serverHandler = new ServerHandler();
                pipeline.addLast(serverHandler);
            }
 
@@ -39,6 +43,7 @@ public class ServerInitializer extends ChannelInitializer<Channel>{
 
         //socketChannel.pipeline().addLast(new ServerHandler());
     }
+
     private ServerHandler serverHandler;
 
     public ServerHandler getServerHandler() {

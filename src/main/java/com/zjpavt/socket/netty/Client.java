@@ -11,11 +11,9 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.DefaultThreadFactory;
 
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
-public class Client {
+public class Client implements Runnable {
 	private static void runClient() throws InterruptedException {  
 		EventLoopGroup looptwo=new NioEventLoopGroup();
 		Bootstrap bootstrap=new Bootstrap();
@@ -29,6 +27,12 @@ public class Client {
 			 }
 			});
 			ChannelFuture cf=bootstrap.connect(Server.HOST, Server.CLIENT_PORT2).sync();
+            ChannelFuture cf2=bootstrap.connect(Server.HOST, Server.CLIENT_PORT2).sync();
+            boolean flag = true;
+            while(flag){
+                ChannelFuture cf3=bootstrap.connect(Server.HOST, Server.CLIENT_PORT2).sync();
+                Thread.sleep(1);
+            }
 			cf.channel().closeFuture().sync();
 			looptwo.shutdownGracefully();
     	}catch(Exception e) {
@@ -39,15 +43,34 @@ public class Client {
 		}
     }
 	public static void main(String[] args) throws InterruptedException {
-		ScheduledExecutorService schedule=new ScheduledThreadPoolExecutor(5,new DefaultThreadFactory("send request"));
+	    runClient();
+		/*ScheduledExecutorService schedule=new ScheduledThreadPoolExecutor(5,new DefaultThreadFactory("send request"));
 	    schedule.scheduleAtFixedRate(()->{
 	    	 	try {
+	    	 		System.out.println(System.currentTimeMillis());
 					runClient();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}	
-		}, 0, 10, TimeUnit.SECONDS);
+		}, 0, 1, TimeUnit.SECONDS);*/
+
+
+		//ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(5,1,TimeUnit.SECONDS,new ArrayBlockingQueue<Runnable>(1));
+
 		//runClient();
+      /*  for(int i=0;i<100;i++){
+            new Thread((Runnable) new Client()).run();
+            Thread.sleep(1000);
+        }*/
 	}
+
+    @Override
+    public void run() {
+        try {
+            runClient();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

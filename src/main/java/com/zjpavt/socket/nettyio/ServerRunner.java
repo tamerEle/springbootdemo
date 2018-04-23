@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import com.corundumstudio.socketio.SocketIOServer;
 
-@Component
 @Order(value=1)
 public class ServerRunner implements CommandLineRunner {
     private final SocketIOServer server;

@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Bean;
 import java.io.IOException;
 import java.net.Socket;
 
-/*@EnableAutoConfiguration
-@SpringBootApplication*/
+//@EnableAutoConfiguration
+//@SpringBootApplication
 public class SpringbootdemoApplication {
 	private static final Logger log = LoggerFactory.getLogger(SpringbootdemoApplication.class);
 	private static final String HOST = "127.0.0.1";
@@ -22,7 +22,7 @@ public class SpringbootdemoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootdemoApplication.class, args);
 	}
-
+/*
 	@Bean
 	public SocketIOServer socketIOServer() {
 		com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
@@ -30,7 +30,7 @@ public class SpringbootdemoApplication {
 		System.out.println("this is " + os);
 		config.setHostname(HOST);
 		config.setPort(PORT);
-        /*config.setAuthorizationListener(new AuthorizationListener() {//类似过滤器
+        *//*config.setAuthorizationListener(new AuthorizationListener() {//类似过滤器
             @Override
             public boolean isAuthorized(HandshakeData data) {
                 //http://localhost:8081?username=test&password=test
@@ -39,7 +39,7 @@ public class SpringbootdemoApplication {
                 // String password = data.getSingleUrlParam("password");
                 return true;
             }
-        });*/
+        });*//*
 		final SocketIOServer server = new SocketIOServer(config);
 		return server;
 	}
@@ -48,7 +48,7 @@ public class SpringbootdemoApplication {
 	public SpringAnnotationScanner springAnnotationScanner(SocketIOServer socketServer) {
 		log.info("bean-------------------------------------");
 		return new SpringAnnotationScanner(socketServer);
-	}
+	}*/
 
 
 }

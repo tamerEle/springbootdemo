@@ -17,24 +17,13 @@ import java.net.Socket;
 
 @EnableAutoConfiguration
 @SpringBootApplication
-@ComponentScan
-public class SpringbootNettyDemoApplication implements CommandLineRunner {
+@ComponentScan(basePackages = {"com.zjpavt.socket.netty","com.zjpavt.socket.device.connect"})
+public class SpringbootNettyDemoApplication /*implements CommandLineRunner */{
     public static final Logger log = LoggerFactory.getLogger(SpringbootNettyDemoApplication.class);
     public static void main(String[] args){
         SpringApplication.run(SpringbootNettyDemoApplication.class,args);
         log.info("spring started");
     }
-    @Autowired
-    private ServerHandler serverHandler;
-    @Autowired
-    private SocketServer socketServer;
-    @Bean
-    public SocketServer getSocketServer(){
-        log.info("getSocketServer");
-        SocketServer socketServer = new SocketServer(serverHandler);
-        return socketServer;
-    }
-
 
     @Bean
     public ServerHandler getServerHandler(){
@@ -47,11 +36,9 @@ public class SpringbootNettyDemoApplication implements CommandLineRunner {
     public ServerInitializer getServerInitializer(){
         return new ServerInitializer();
     }
-
-    @Override
     public void run(String... args){
         log.info("server starting");
-        socketServer.start();
+        //socketServer.start();
         log.info("server started");
     }
 }
