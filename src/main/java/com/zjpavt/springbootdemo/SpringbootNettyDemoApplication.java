@@ -1,19 +1,13 @@
 package com.zjpavt.springbootdemo;
 
 import com.zjpavt.socket.netty.ServerHandler;
-import com.zjpavt.socket.netty.ServerInitializer;
-import com.zjpavt.socket.netty.SocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-
-import java.net.Socket;
 
 @EnableAutoConfiguration
 @SpringBootApplication
@@ -25,17 +19,6 @@ public class SpringbootNettyDemoApplication /*implements CommandLineRunner */{
         log.info("spring started");
     }
 
-    @Bean
-    public ServerHandler getServerHandler(){
-        log.info("getServerHandler");
-        return new ServerHandler();
-    }
-
-
-    @Bean
-    public ServerInitializer getServerInitializer(){
-        return new ServerInitializer();
-    }
     public void run(String... args){
         log.info("server starting");
         //socketServer.start();

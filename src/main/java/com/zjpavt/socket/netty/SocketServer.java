@@ -3,10 +3,7 @@ package com.zjpavt.socket.netty;
 import com.zjpavt.socket.device.connect.DeviceConnectManager;
 import com.zjpavt.socket.hfNetty.Server;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
@@ -30,7 +27,7 @@ public class SocketServer {
     private EventLoopGroup workGroup = new NioEventLoopGroup();
 
     @Autowired
-    private ServerHandler serverHandler;
+    private ChannelInboundHandlerAdapter serverHandler;
 
     public SocketServer(){
     }
@@ -43,8 +40,8 @@ public class SocketServer {
                     @Override
                     protected void initChannel(Channel channel) throws Exception {
                         //Server Handler 是一个多例对象
-                        if (true) {
-                            channel.pipeline().addLast(new ServerHandler());
+                        if (false) {
+                            //channel.pipeline().addLast(new ServerHandler());
                         } else {
                             channel.pipeline().addLast(serverHandler);
                         }
@@ -69,9 +66,6 @@ public class SocketServer {
             workGroup.shutdownGracefully();
         }
     }
-
-    @Resource
-    private ServerInitializer init;
 
     @PostConstruct
     public void newServer(){

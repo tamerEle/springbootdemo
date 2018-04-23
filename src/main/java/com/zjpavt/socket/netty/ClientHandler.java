@@ -16,7 +16,8 @@ import java.util.concurrent.TimeUnit;
 public class ClientHandler extends ChannelInboundHandlerAdapter{
 	private static ScheduledExecutorService scheduledExecutorService =
 			new ScheduledThreadPoolExecutor(5,new DefaultThreadFactory("heart"));
-	 @Override  
+
+	@Override
 	    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {  
 	        try {
 	            ByteBuf buf = (ByteBuf) msg;
@@ -28,7 +29,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter{
 	            	ctx.writeAndFlush(Unpooled.copiedBuffer(("Device ID:" + new Random().nextInt()).getBytes()));
 				}
 				scheduledExecutorService.scheduleAtFixedRate(()->{
-					sendMsg(ctx.channel(),"heart");
+					//sendMsg(ctx.channel(),"heart");
 				},5,6, TimeUnit.SECONDS);
 	        } finally {
 	            ReferenceCountUtil.release(msg);  

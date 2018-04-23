@@ -31,7 +31,7 @@ public class Client implements Runnable {
             boolean flag = true;
             while(flag){
                 ChannelFuture cf3=bootstrap.connect(Server.HOST, Server.CLIENT_PORT2).sync();
-                Thread.sleep(1);
+                Thread.sleep(10000);
             }
 			cf.channel().closeFuture().sync();
 			looptwo.shutdownGracefully();

@@ -1,6 +1,8 @@
 package com.zjpavt.socket.device.connect;
 
 import io.netty.channel.Channel;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -10,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author zyc
  */
 @Service
+//@Slf4j
 public class DeviceConnectManager implements IDeviceConnectManager {
     final private Map<UUID,DeviceConnect> connectMap = new ConcurrentHashMap();
     /**
@@ -71,6 +74,11 @@ public class DeviceConnectManager implements IDeviceConnectManager {
     public DeviceConnect logout(DeviceConnect deviceConnect) {
         /* can't know whether the Key is contained in the map,and can't know whether what do in the lambdas;
          * do nothing if the device not logined. */
+        if (deviceConnect.getDeviceID() == null) {
+            String msg = "A logout connection without deviceID";
+            //throw new SocketConnectException("A logout connection without deviceID");
+
+        }
         deviceMap.computeIfPresent(deviceConnect.getDeviceID(),(deviceID,loginedDeviceList) ->{
             if (loginedDeviceList == null) {
                 throw new NullPointerException("this is null");
@@ -101,5 +109,16 @@ public class DeviceConnectManager implements IDeviceConnectManager {
     @Override
     public int countTotalLoginedDevice() {
         return this.deviceMap.size();
+    }
+
+    public class SocketConnectException extends Exception {
+        public SocketConnectException(String casue) {
+            super(casue);
+        }
+
+        public SocketConnectException() {
+            super();
+        }
+
     }
 }

@@ -3,9 +3,11 @@ package com.zjpavt.socket.netty;
 import com.zjpavt.socket.device.connect.DeviceConnect;
 import com.zjpavt.socket.device.connect.DeviceConnectManager;
 import com.zjpavt.socket.device.connect.IDeviceConnectManager;
+import com.zjpavt.util.ConfigUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
@@ -14,19 +16,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//@Service
-public class ServerHandler/* extends ChannelInboundHandlerAdapter implements SocketServer.NewSocketListener*/{/*
+@Service
+@ChannelHandler.Sharable
+public class ServerHandlerV1 extends ChannelInboundHandlerAdapter implements SocketServer.NewSocketListener{
     private Logger log = LoggerFactory.getLogger(ServerHandler.class);
-    private Map<String,Channel> channelMap = new ConcurrentHashMap<String,Channel>();
-    public ServerHandler() {
+    private Map<Channel, DeviceConnect> channelDeviceConnectMap = new ConcurrentHashMap<>();
+    private static final String CHARSET = "UTF-8";
+    final Pattern deviceIDPattern = Pattern.compile(ConfigUtil.SOCKET_CONNECT_DEVICE_ID + "([\\s\\S]*)");
+    public ServerHandlerV1() {
     }
 
     @Autowired
@@ -34,7 +37,7 @@ public class ServerHandler/* extends ChannelInboundHandlerAdapter implements Soc
 
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-        ctx.writeAndFlush(Unpooled.copiedBuffer("x".getBytes()));
+        //ctx.writeAndFlush(Unpooled.copiedBuffer("x".getBytes()));
         //list.add(ctx.channel());
     }
 
@@ -45,31 +48,17 @@ public class ServerHandler/* extends ChannelInboundHandlerAdapter implements Soc
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf buf = (ByteBuf) msg;
-        byte[] data = new byte[buf.readableBytes()];
-        buf.readBytes(data);
-        String request = new String(data, "utf-8");
-        log.info("channelRead: " + ctx.channel().id() + ctx.channel() + " receive message =" + request);
-        if(request.contains("Device ID")){
-            channelMap.put(request,ctx.channel());
-            String sendMsg = "new channel join " + request + "; channel map size=" +channelMap.size() + "; ";
-            //log.debug(sendMsg);
-            //sendMsgAllActive(sendMsg);
-            sendMsg(ctx.channel(),sendMsg);
-        }else if(request.contains("heart")){
-            sendMsg(ctx.channel(),"heart");
+        String receiveMsg = receiveMessage((ByteBuf) msg, ctx.channel());
+        Matcher deviceIDMatcher = this.deviceIDPattern.matcher(receiveMsg);
+        if(deviceIDMatcher.matches()){
+            String deviceSerial = deviceIDMatcher.group(0);
+            UUID deviceID = UUID.randomUUID();//TODO the deviceID is not request.it is from database.
+            UUID connectID = this.channelDeviceConnectMap.get(ctx.channel()).getConnectID();
+            DeviceConnect deviceConnect = deviceConnectManager.getByConnectID(connectID);
+            this.deviceConnectManager.login(deviceConnect, deviceID, deviceSerial);
+        }else if(receiveMsg.contains("heart")){
+           // sendMsg(ctx.channel(),"heart");
         }
-        *//*
-        System.out.println("Server: " + request);
-        ctx.writeAndFlush(Unpooled.copiedBuffer("888".getBytes()));
-        Thread.sleep(1000);
-        ctx.writeAndFlush(Unpooled.copiedBuffer("msg before close".getBytes()));
-        log.info("msg before close");
-        ctx.channel().closeFuture();
-        ctx.writeAndFlush("msg after close");
-        log.info("msg after close");*//*
-
-        //ReferenceCountUtil.release(msg);//
     }
 
     @Override
@@ -90,23 +79,37 @@ public class ServerHandler/* extends ChannelInboundHandlerAdapter implements Soc
         log.debug(channel + " send message =" +message);
     }
     private void sendMsgAllActive(String message){
-        for(Channel channel : channelMap.values()){
+        /*for(Channel channel : channelMap.values()){
             sendMsg(channel,message);
-        }
+        }*/
     }
-
+    private void askForLogin(Channel channel) {
+        sendMsg(channel,"x");
+    }
+    private String receiveMessage(ByteBuf msg, Channel channel) throws UnsupportedEncodingException {
+        ByteBuf buf = (ByteBuf) msg;
+        byte[] data = new byte[buf.readableBytes()];
+        buf.readBytes(data);
+        String request = new String(data, CHARSET);
+        log.info("channelRead: " + channel + " receive message =" + request);
+        return request;
+    }
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        //DeviceConnect deviceConnect = deviceConnectManager.addConnect(ctx.channel());
-
+        DeviceConnect deviceConnect = deviceConnectManager.addConnect(ctx.channel());
+        channelDeviceConnectMap.put(ctx.channel(), deviceConnect);
+        askForLogin(ctx.channel());
         super.channelActive(ctx);
+        log.debug("channel active " + ctx.channel() + " size=" + deviceConnectManager.countTotalConnect());
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        channelMap.values().remove(ctx.channel());
-         sendMsg(ctx.channel(), String.valueOf(channelMap.size()));
-        log.warn("channel inactive " + ctx.channel());
+        DeviceConnect deviceConnect = channelDeviceConnectMap.get(ctx.channel());
+        deviceConnectManager.logout(deviceConnect);
+        deviceConnectManager.removeConnect(deviceConnect.getConnectID());
+        /*sendMsg(ctx.channel(), String.valueOf(deviceConnectManager.size()));*/
+        log.debug("channel inactive " + ctx.channel() + " size=" + deviceConnectManager.countTotalConnect());
     }
 
 
@@ -120,5 +123,5 @@ public class ServerHandler/* extends ChannelInboundHandlerAdapter implements Soc
 
     }
 
-*/
+
 }
