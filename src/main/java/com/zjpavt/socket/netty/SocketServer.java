@@ -1,57 +1,49 @@
 package com.zjpavt.socket.netty;
 
-import com.zjpavt.socket.device.connect.DeviceConnectManager;
-import com.zjpavt.socket.hfNetty.Server;
+import com.zjpavt.util.ConfigUtil;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+
+/**
+ * @author zyc
+ */
 
 @Service
+@Slf4j
 public class SocketServer {
-    private static Logger log = LoggerFactory.getLogger(SocketServer.class);
-    private static final List<SocketConnectedBean> socket =
-            Collections.synchronizedList(new ArrayList< SocketConnectedBean >());
+    private static final int SERVER_PORT = ConfigUtil.SOCKET_CONNECT_SERVER_PORT;
     private EventLoopGroup bossGroup = new NioEventLoopGroup();
     private EventLoopGroup workGroup = new NioEventLoopGroup();
 
-    @Autowired
-    private ChannelInboundHandlerAdapter serverHandler;
+    private ChannelInboundHandlerAdapter  serverHandler;
 
-    public SocketServer(){
+    @Autowired
+    public SocketServer(ChannelInboundHandlerAdapter serverHandler){
+        Assert.notNull(serverHandler,"serverHandler most not be null");
     }
-    public void start(){
-        log.info("SocketServer 启动中...");
+    void start(){
+        log.info("SocketServer 启动中..." + this);
         ServerBootstrap serverBootstrap = new ServerBootstrap();
         serverBootstrap.group(bossGroup, workGroup)
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<Channel>() {
                     @Override
-                    protected void initChannel(Channel channel) throws Exception {
-                        //Server Handler 是一个多例对象
-                        if (false) {
-                            //channel.pipeline().addLast(new ServerHandler());
-                        } else {
-                            channel.pipeline().addLast(serverHandler);
-                        }
+                    protected void initChannel(Channel channel){
+                        channel.pipeline().addLast(serverHandler);
                     }
                 });
         try {
             log.info("SocketServer 绑定端口");
-            ChannelFuture channelFuture = serverBootstrap.bind(Server.PORT2).sync();
-            //服务器断开连接才向下继续执行
-            //channelFuture.channel().closeFuture().sync();
+            serverBootstrap.bind(SERVER_PORT).sync();
             log.info("SocketServer 启动成功");
         } catch (InterruptedException e) {
             log.error("SocketServer 没有启动");
@@ -69,7 +61,7 @@ public class SocketServer {
 
     @PostConstruct
     public void newServer(){
-            this.start();
+        this.start();
     }
 
     @PreDestroy
@@ -77,12 +69,7 @@ public class SocketServer {
 
     }
 
-    public interface NewSocketListener{
-        public void newSocketJoin(Channel channel,String deviceID);
-        public void socketDisconnect(Channel channel);
-    }
     public static void main(String[] args){
         System.out.println("SocketServer开始启动...");
-        //newServer();
     }
 }

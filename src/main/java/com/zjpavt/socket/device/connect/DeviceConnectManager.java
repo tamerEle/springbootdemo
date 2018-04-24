@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author zyc
  */
 @Service
-//@Slf4j
+@Slf4j
 public class DeviceConnectManager implements IDeviceConnectManager {
     final private Map<UUID,DeviceConnect> connectMap = new ConcurrentHashMap();
     /**
@@ -75,28 +75,32 @@ public class DeviceConnectManager implements IDeviceConnectManager {
         /* can't know whether the Key is contained in the map,and can't know whether what do in the lambdas;
          * do nothing if the device not logined. */
         if (deviceConnect.getDeviceID() == null) {
-            String msg = "A logout connection without deviceID";
+            String msg = "logout without deviceID";
+            log.warn(deviceConnect.getChannel() + msg);
+            return null;
             //throw new SocketConnectException("A logout connection without deviceID");
 
         }
         deviceMap.computeIfPresent(deviceConnect.getDeviceID(),(deviceID,loginedDeviceList) ->{
-            if (loginedDeviceList == null) {
-                throw new NullPointerException("this is null");
-            }
-            if (loginedDeviceList.size() > 1) {
-                for (DeviceConnect deviceConnectByDeviceID : loginedDeviceList) {
-                    if (deviceConnectByDeviceID.getConnectID().equals(deviceConnect.getConnectID())) {
-                        loginedDeviceList.remove(deviceConnect);
-                        return loginedDeviceList;
-                    }
+                if (loginedDeviceList == null) {
+                    //throw new NullPointerException("this is null");
+                    //the key is present but the value mapped is null
+                    return null;
                 }
+                if (loginedDeviceList.size() > 1) {
+                    for (DeviceConnect deviceConnectByDeviceID : loginedDeviceList) {
+                        if (deviceConnectByDeviceID.getConnectID().equals(deviceConnect.getConnectID())) {
+                            loginedDeviceList.remove(deviceConnect);
+                            return loginedDeviceList;
+                        }
+                    }
                 /*if the size is zero or the logout device is the only one in the Map, remove the key
                 the second expression ignore the size is 1.*/
-            } else if(loginedDeviceList.size() == 0 || (loginedDeviceList.get(0).getConnectID().equals(deviceConnect.getConnectID()))){
-                /*for the deviceMap return null is meaning the map will remove the key.*/
-                return null;
-            }
-            return loginedDeviceList;
+                } else if (loginedDeviceList.size() == 0 || (loginedDeviceList.get(0).getConnectID().equals(deviceConnect.getConnectID()))) {
+                    /*for the deviceMap return null is meaning the map will remove the key.*/
+                    return null;
+                }
+                return loginedDeviceList;
         });
         return deviceConnect;
     }
