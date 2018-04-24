@@ -15,7 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @EnableAutoConfiguration
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.zjpavt.httprange","socket.netty","socket.device.connect"})
+@ComponentScan(basePackages = {"com.zjpavt.httprange","com.zjpavt.socket.netty","com.zjpavt.socket.device.connect"})
 @Slf4j
 public class SpringbootNettyDemoApplication /*implements CommandLineRunner */{
     /**
