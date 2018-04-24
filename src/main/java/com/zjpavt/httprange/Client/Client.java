@@ -1,4 +1,4 @@
-package com.zjpavt.httpRange;
+package com.zjpavt.httprange.Client;
 
 
 import io.netty.util.concurrent.DefaultThreadFactory;
@@ -6,18 +6,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.sql.Time;
-import java.util.RandomAccess;
 import java.util.concurrent.*;
 
 public class Client {
     /*
     http://127.0.0.1:9090/static/download.zip
     */
-    public static final String DOWNLOAD_URL = "http://127.0.0.1:9090/download.txt";
+    public static final String DOWNLOAD_URL = "http://127.0.0.1:9090/downloadFile";
     public static final String LOCAL_FILE_PATH = "D:\\down.txt";
     public static final Logger log = LoggerFactory.getLogger(Client.class);
 
@@ -98,7 +95,7 @@ public class Client {
     public void append2DownloadFile(String localFilePath,String downloadUrl) throws IOException {
         File file = new File(localFilePath);
         if (!file.isFile()) {
-            return;
+            //return;
         } else {
             file.createNewFile();
         }
