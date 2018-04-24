@@ -12,4 +12,9 @@ public class ConfigUtil {
 
     public static final int SOCKET_CONNECT_CLIENT_PORT = 8082;
     public static final String SOCKET_CONNECT_SERVER_HOST = "127.0.0.1";
+
+    /**
+     * used for http range download
+     */
+    public static final String DOWNLOAD_URL = "http://127.0.0.1:9090/downloadFile";
 }
