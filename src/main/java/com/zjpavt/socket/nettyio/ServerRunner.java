@@ -1,11 +1,9 @@
 package com.zjpavt.socket.nettyio;
 
+import com.corundumstudio.socketio.SocketIOServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
-
-import com.corundumstudio.socketio.SocketIOServer;
 
 @Order(value=1)
 public class ServerRunner implements CommandLineRunner {

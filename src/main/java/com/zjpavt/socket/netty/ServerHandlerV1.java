@@ -4,7 +4,6 @@ import com.zjpavt.socket.device.connect.DeviceConnect;
 import com.zjpavt.socket.device.connect.IDeviceConnectManager;
 import com.zjpavt.util.ConfigUtil;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -15,14 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
 @ChannelHandler.Sharable
-public class ServerHandlerV1 extends ChannelInboundHandlerAdapter implements SocketServer.NewSocketListener{
+public class ServerHandlerV1 extends ChannelInboundHandlerAdapter {
     private Logger log = LoggerFactory.getLogger(ServerHandlerV1.class);
     private Map<Channel, DeviceConnect> channelDeviceConnectMap = new ConcurrentHashMap<>();
     private static final String CHARSET = ConfigUtil.SOCKET_CONNECT_CHARSET;
@@ -107,17 +107,4 @@ public class ServerHandlerV1 extends ChannelInboundHandlerAdapter implements Soc
         /*sendMsg(ctx.channel(), String.valueOf(deviceConnectManager.size()));*/
         log.debug("channel inactive " + ctx.channel() + " deviceSize=" + deviceConnectManager.countTotalConnect());
     }
-
-
-    @Override
-    public void newSocketJoin(Channel channel, String deviceID) {
-        //SocketServer.
-    }
-
-    @Override
-    public void socketDisconnect(Channel channel) {
-
-    }
-
-
 }

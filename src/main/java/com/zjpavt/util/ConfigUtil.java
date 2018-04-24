@@ -1,6 +1,7 @@
 package com.zjpavt.util;
 
 public class ConfigUtil {
+    public static final String DEFAULT_CHARSET = "UTF-8";
     /**the Server communicate with device.*/
     public static final String SOCKET_CONNECT_DEVICE_ID = "Device ID:";
     public static final String SOCKET_CONNECT_CHARSET = "UTF-8";

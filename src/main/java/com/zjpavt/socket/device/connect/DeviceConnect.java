@@ -2,7 +2,6 @@ package com.zjpavt.socket.device.connect;
 
 import io.netty.channel.Channel;
 
-import java.util.Date;
 import java.util.UUID;
 
 public class DeviceConnect {

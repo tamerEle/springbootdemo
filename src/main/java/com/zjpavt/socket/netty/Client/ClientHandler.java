@@ -16,14 +16,14 @@ import java.util.Random;
 /**
  * @author zyc
  */
-public class ClientHandler extends ChannelInboundHandlerAdapter{
+public class ClientHandler extends ChannelInboundHandlerAdapter {
 	private static final Logger log = LoggerFactory.getLogger(ClientHandler.class);
 
 	/*@Autowired
-	private ISendMessageQueueService sendMessageQueueService;*/
+	private ISendMessageQueueService sendMessageQueueService; TODO*/
 
 	@Override
-	    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {  
+	    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 	        try {
 
 				String receiveMessage = receiveMessage((ByteBuf) msg, ctx.channel());
@@ -31,7 +31,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter{
 	            	sendMsg(ctx.channel(),"Device ID:" + new Random().nextInt());
 				}
 	        } finally {
-	            ReferenceCountUtil.release(msg);  
+	            ReferenceCountUtil.release(msg);
 	            //ctx.close();
 	        }  
 	    }  

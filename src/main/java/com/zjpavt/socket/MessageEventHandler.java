@@ -8,10 +8,10 @@ import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.UUID;
+
 //@Component
 public class MessageEventHandler {
     public static SocketIOServer socketIoServer;

@@ -1,6 +1,6 @@
-package com.zjpavt.httpRange;
+package com.zjpavt.httprange;
 
-public class HttpDownloadSplitterImpl implements HttpDownloadSplitter {
+public class HttpDownloadSplitterImpl implements com.zjpavt.httpRange.HttpDownloadSplitter {
     private String localFilePath;
     private String downloadFileUrl;
     private int threadNum;

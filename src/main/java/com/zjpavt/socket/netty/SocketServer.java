@@ -2,7 +2,10 @@ package com.zjpavt.socket.netty;
 
 import com.zjpavt.util.ConfigUtil;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +27,7 @@ public class SocketServer {
     private EventLoopGroup bossGroup = new NioEventLoopGroup();
     private EventLoopGroup workGroup = new NioEventLoopGroup();
 
-    private ChannelInboundHandlerAdapter  serverHandler;
+    private ChannelInboundHandlerAdapter serverHandler;
 
     @Autowired
     public SocketServer(ChannelInboundHandlerAdapter serverHandler){
