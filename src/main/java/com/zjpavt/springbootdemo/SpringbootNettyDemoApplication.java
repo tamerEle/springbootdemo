@@ -7,16 +7,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author zyc
  */
 
 
-@EnableAutoConfiguration
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.zjpavt.httprange","com.zjpavt.socket.netty","com.zjpavt.socket.device.connect"})
+@ComponentScan(basePackages = {"com.zjpavt.httpRange","com.zjpavt.socket.netty","com.zjpavt.socket.device.connect"})
 @Slf4j
+@RestController
 public class SpringbootNettyDemoApplication /*implements CommandLineRunner */{
     /**
      *
@@ -25,5 +27,9 @@ public class SpringbootNettyDemoApplication /*implements CommandLineRunner */{
     public static void main(String[] args){
         SpringApplication.run(SpringbootNettyDemoApplication.class,args);
         log.info("spring started");
+    }
+    @RequestMapping(value = "/hello")
+    public String hello() {
+        return "hello";
     }
 }

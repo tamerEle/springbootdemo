@@ -1,4 +1,4 @@
-package com.zjpavt.httprange.Client;
+package com.zjpavt.httpRange.Client;
 
 
 import io.netty.util.concurrent.DefaultThreadFactory;

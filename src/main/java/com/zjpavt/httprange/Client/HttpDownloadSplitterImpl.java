@@ -1,4 +1,4 @@
-package com.zjpavt.httprange.Client;
+package com.zjpavt.httpRange.Client;
 
 public class HttpDownloadSplitterImpl implements HttpDownloadSplitter {
     private String localFilePath;

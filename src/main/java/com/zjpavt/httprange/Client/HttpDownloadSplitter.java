@@ -1,4 +1,4 @@
-package com.zjpavt.httprange.Client;
+package com.zjpavt.httpRange.Client;
 
 public interface HttpDownloadSplitter {
     public void download(String localFilePath, String downloadFileUrl,int threadNum,int length,int beginIndex);
