@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><update>
+    <version>58</version>
+    <size>19517440</size>
+    <updatetime>2018.03.14</updatetime>
+    <updateinfo>
+        更新说明：
+
+        v58:修复个别情况下手机认证失败问题
+
+        v57:添加集控场景另命名功能
+
+        v56:添加设备初始化向导
+    </updateinfo>
+    <name>LampRemote</name>
+    <url>http://update.zjpavt.com/firmware/download/PavtFirmware</url>
+    <sh>脚本内容，需要释放到指定文件再执行</sh>
+    <sign>XGhWY79hf8dPhjV0Rp6PqwxjAqdCwXSgvG99o1FTx6vV8yqhFtSFGwNiff7KhI50DIwWfxmNEZTZhNHDB5U46uQyApcuyfU0ceq8fpyJc/wFkWLnMD2Xb6p/AtMMquTMpGgWluQynUzPSop9GqE3rBajbIIKY79IErMxbzgQcy0=</sign>
+</update>

@@ -21,7 +21,9 @@ public class XmlDownload {
     private static HashMap<String, String> name2FileMapper = new HashMap<>(4);
 
     static{
-        name2FileMapper.put("PavtUpdate","C:\\idea\\git\\springbootdemo\\src\\main\\resources\\Update.xml");
+        name2FileMapper.put("PavtUpdate","C:\\idea\\git\\springbootdemo\\src\\main\\resources\\PavtUpdate.xml");
+        name2FileMapper.put("PavtFirmware","C:\\idea\\git\\springbootdemo\\src\\main\\resources\\PavtFirmware.xml");
+        name2FileMapper.put("PavtBootUpdate","C:\\idea\\git\\springbootdemo\\src\\main\\resources\\PavtBootUpdate.xml");
     }
 
     @RequestMapping(path = "/{xmlName}.xml")

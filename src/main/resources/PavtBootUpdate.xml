@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<update>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><update>
     <version>58</version>
     <size>19517440</size>
     <updatetime>2018.03.14</updatetime>
@@ -13,8 +12,8 @@
         v56:添加设备初始化向导
     </updateinfo>
     <name>LampRemote</name>
-    <url>http://relay.zjpavt.com/app/v58/LampRemote.apk</url>
+    <url>http://update.zjpavt.com/firmware/download/PavtBootUpdate</url>
     <sh>脚本内容，需要释放到指定文件再执行</sh>
-    <sign>签名</sign>
+    <sign>POrzAMTXaEAX1HzKMwJCoBrs/dgr2RhfU/Fz3FyjweJdhHSAUJyLygWxbepivtCh/t1FXO/E2pkOgJrdIu1n83XwZVxjNr3B4unOFL6czDUIbv8Hjq2lGgCCi+9XP5sQHonPN9y5HhD7SqM25RPJU+wpGnhBNAyqRFMsbszhWGk=</sign>
 
 </update>
